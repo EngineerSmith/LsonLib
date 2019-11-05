@@ -1169,9 +1169,10 @@ namespace LsonLib
 
     /// <summary>Encapsulates a string as a LSON value.</summary>
     [Serializable]
-    public sealed class LsonString : LsonValue, IEquatable<LsonString>
+    public class LsonString : LsonValue, IEquatable<LsonString>
     {
-        private string _value;
+        /// <summary>Holds the <see cref="LsonString"/> value.</summary>
+        protected string _value;
 
         /// <summary>Constructs a <see cref="LsonString"/> instance from the specified string.</summary>
         public LsonString(string value)
@@ -1466,8 +1467,47 @@ namespace LsonLib
         }
     }
 
-    /// <summary>Encapsulates a boolean value as a <see cref="LsonValue"/>.</summary>
+    /// <summary>Encapsulates a Lua Function as a LSON string.</summary>
     [Serializable]
+    public sealed class LsonFunc : LsonString
+    {
+        /// <summary>Constructs a <see cref="LsonFunc"/> instance from the specified string.</summary>
+        public LsonFunc(string value)
+        : base(value)
+        { }
+
+        /// <summary>Converts the current LSON value to a LSON function that parses back to this value.</summary>
+        public override void AppendIndented(StringBuilder sb, int indentation = 0)
+        {
+            if (sb == null)
+                throw new ArgumentNullException("sb");
+
+            foreach (var c in _value)
+            {
+                switch (c)
+                {
+                    case '"': sb.Append("\\\""); break;
+                    case '\\': sb.Append("\\\\"); break;
+                    case '\a': sb.Append("\\a"); break;
+                    case '\b': sb.Append("\\b"); break;
+                    case '\f': sb.Append("\\f"); break;
+                    case '\t': sb.Append("\\t"); break;
+                    default:
+                        if (c <= 31)
+                        {
+                            sb.Append('\\');
+                            sb.Append(((int)c).ToString());
+                        }
+                        else
+                            sb.Append(c);
+                        break;
+                }
+            }
+        }
+    }
+
+/// <summary>Encapsulates a boolean value as a <see cref="LsonValue"/>.</summary>
+[Serializable]
     public sealed class LsonBool : LsonValue, IEquatable<LsonBool>
     {
         private bool _value;
