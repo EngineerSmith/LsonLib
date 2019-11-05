@@ -1486,7 +1486,6 @@ namespace LsonLib
             {
                 switch (c)
                 {
-                    case '"': sb.Append("\\\""); break;
                     case '\\': sb.Append("\\\\"); break;
                     case '\a': sb.Append("\\a"); break;
                     case '\b': sb.Append("\\b"); break;
