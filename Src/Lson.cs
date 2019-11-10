@@ -1486,11 +1486,9 @@ namespace LsonLib
             {
                 switch (c)
                 {
-                    case '\\': sb.Append("\\\\"); break;
                     case '\a': sb.Append("\\a"); break;
                     case '\b': sb.Append("\\b"); break;
                     case '\f': sb.Append("\\f"); break;
-                    case '\t': sb.Append("\\t"); break;
                     default:
                         if (c <= 31)
                         {
