@@ -5,3 +5,4 @@ bin
 obj
 Builds
 *.orig
+/.vs/LsonLib/v16/Server/sqlite3
