@@ -470,6 +470,8 @@ namespace LsonLib
                 ConsumeWhitespace();
                 if (IsIgnoredWord(word))
                     continue;
+                if (word == "return")
+                    break;
                 if (Cur != '=')
                     throw new LsonParseException(this, "Expected an = after variable name.");
                 Pos++;
@@ -482,7 +484,7 @@ namespace LsonLib
 
         private bool IsIgnoredWord(string word)
         {
-            return word == "local" || word == "return";
+            return word == "local";
         }
     }
 
