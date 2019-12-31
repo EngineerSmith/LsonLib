@@ -34,12 +34,13 @@ namespace LsonLib
             var sb = new StringBuilder();
             foreach (var v in vars)
             {
-                sb.Append("\r\n");
-                sb.Append(v.Key);
-                sb.Append(" = ");
+                sb.Append($"\r\nlocal {v.Key} = ");
                 LsonValue.AppendIndented(v.Value, sb, 0);
             }
-            sb.Append("\r\n");
+            sb.Append("\r\nreturn {");
+            foreach (var v in vars)
+                sb.Append($"{v.Key}={v.Key}");
+            sb.Append("}\r\n");
             return sb.ToString();
         }
     }
@@ -467,6 +468,8 @@ namespace LsonLib
                     throw new LsonParseException(this, "Expected a variable name.");
                 Pos += word.Length;
                 ConsumeWhitespace();
+                if (IsIgnoredWord(word))
+                    continue;
                 if (Cur != '=')
                     throw new LsonParseException(this, "Expected an = after variable name.");
                 Pos++;
@@ -475,6 +478,11 @@ namespace LsonLib
                 result.Add(word, ParseValue());
             }
             return result;
+        }
+
+        private bool IsIgnoredWord(string word)
+        {
+            return word == "local" || word == "return";
         }
     }
 
