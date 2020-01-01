@@ -471,7 +471,11 @@ namespace LsonLib
                 if (IsIgnoredWord(word))
                     continue;
                 if (word == "return")
+                {
+                    Pos = Lson.Length;
                     break;
+                }
+
                 if (Cur != '=')
                     throw new LsonParseException(this, "Expected an = after variable name.");
                 Pos++;
