@@ -39,7 +39,7 @@ namespace LsonLib
             }
             sb.Append("\r\nreturn {");
             foreach (var v in vars)
-                sb.Append($"{v.Key}={v.Key}");
+                sb.Append($" {v.Key}={v.Key},");
             sb.Append("}\r\n");
             return sb.ToString();
         }
